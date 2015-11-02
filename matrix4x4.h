@@ -59,34 +59,34 @@
 
 /* Copies other matrix into mat */
 GLdouble *
-m4Copy (GLdouble *mat, const float *other);
+m4Copy (GLdouble *mat, const GLdouble *other);
 
 GLdouble *
-m4Multiply (GLdouble *mat, const float *right);
+m4Multiply (GLdouble *mat, const GLdouble *right);
 
 GLdouble *
-m4MultMatrix (GLdouble *mat, const float *left);
+m4MultMatrix (GLdouble *mat, const GLdouble *left);
 
 inline GLdouble
 m4Get (GLdouble *mat, unsigned int row, unsigned int col);
 
 GLdouble *
-m4Scale (GLdouble *mat, float sx, float sy, float sz);
+m4Scale (GLdouble *mat, GLdouble sx, GLdouble sy, GLdouble sz);
 
 GLdouble *
-m4Translate (GLdouble *mat, float tx, float ty, float tz);
+m4Translate (GLdouble *mat, GLdouble tx, GLdouble ty, GLdouble tz);
 
 GLdouble *
-m4Rotate (GLdouble *mat, float angle, float x, float y, float z);
+m4Rotate (GLdouble *mat, GLdouble angle, GLdouble x, GLdouble y, GLdouble z);
 
 GLdouble *
-m4Frustum (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
+m4Frustum (GLdouble *mat, GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble nearZ, GLdouble farZ);
 
 GLdouble *
-m4Perspective (GLdouble *mat, float fovy, float aspect, float nearZ, float farZ);
+m4Perspective (GLdouble *mat, GLdouble fovy, GLdouble aspect, GLdouble nearZ, GLdouble farZ);
 
 GLdouble *
-m4Ortho (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
+m4Ortho (GLdouble *mat, GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble nearZ, GLdouble farZ);
 
 /* In-place inversion */
 GLdouble *
@@ -94,7 +94,7 @@ m4Invert (GLdouble *mat);
 
 /* Puts the inverse of other matrix into mat */
 GLdouble *
-m4Inverse (GLdouble *mat, const float *other);
+m4Inverse (GLdouble *mat, const GLdouble *other);
 
 /* In-place transpose */
 GLdouble *

@@ -70,7 +70,7 @@ m4LoadIdentity (GLdouble *mat) {
 
 /* Copies other matrix into mat */
 GLdouble *
-m4Copy (GLdouble *mat, const float *other) {
+m4Copy (GLdouble *mat, const GLdouble *other) {
   unsigned int i;
   for (i = 0; i < 16; i++) {
     mat[i] = other[i];
@@ -79,7 +79,7 @@ m4Copy (GLdouble *mat, const float *other) {
 }
 
 GLdouble *
-m4Multiply (GLdouble *mat, const float *right) {
+m4Multiply (GLdouble *mat, const GLdouble *right) {
   GLdouble tmp[16];
   unsigned int i;
 
@@ -118,13 +118,13 @@ m4Get (GLdouble *mat, unsigned int row, unsigned int col) {
 }
 
 GLdouble *
-m4MultMatrix (GLdouble *mat, const float *left) {
+m4MultMatrix (GLdouble *mat, const GLdouble *left) {
   GLdouble tmp[16];
   return m4Copy (mat, m4Multiply (m4Copy (tmp, left), mat));
 }
 
 GLdouble *
-m4Scale (GLdouble *mat, float sx, float sy, float sz) {
+m4Scale (GLdouble *mat, GLdouble sx, GLdouble sy, GLdouble sz) {
   mat[0*4+0] *= sx;
   mat[0*4+1] *= sx;
   mat[0*4+2] *= sx;
@@ -144,7 +144,7 @@ m4Scale (GLdouble *mat, float sx, float sy, float sz) {
 }
 
 GLdouble *
-m4Translate (GLdouble *mat, float tx, float ty, float tz) {
+m4Translate (GLdouble *mat, GLdouble tx, GLdouble ty, GLdouble tz) {
   mat[3*4+0] += mat[0*4+0] * tx + mat[1*4+0] * ty + mat[2*4+0] * tz;
   mat[3*4+1] += mat[0*4+1] * tx + mat[1*4+1] * ty + mat[2*4+1] * tz;
   mat[3*4+2] += mat[0*4+2] * tx + mat[1*4+2] * ty + mat[2*4+2] * tz;
@@ -154,7 +154,7 @@ m4Translate (GLdouble *mat, float tx, float ty, float tz) {
 }
 
 GLdouble *
-m4Rotate (GLdouble *mat, float angle, float x, float y, float z) {
+m4Rotate (GLdouble *mat, GLdouble angle, GLdouble x, GLdouble y, GLdouble z) {
   GLdouble mag = sqrt(x*x + y*y + z*z);
   GLdouble sinAngle = sin(angle * M_PI / 180.0);
   GLdouble cosAngle = cos(angle * M_PI / 180.0);
@@ -208,7 +208,7 @@ m4Rotate (GLdouble *mat, float angle, float x, float y, float z) {
 }
 
 GLdouble *
-m4Frustum (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
+m4Frustum (GLdouble *mat, GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble nearZ, GLdouble farZ) {
   GLdouble deltaX = right - left;
   GLdouble deltaY = top - bottom;
   GLdouble deltaZ = farZ - nearZ;
@@ -239,7 +239,7 @@ m4Frustum (GLdouble *mat, float left, float right, float bottom, float top, floa
 }
 
 GLdouble *
-m4Perspective (GLdouble *mat, float fovy, float aspect, float nearZ, float farZ) {
+m4Perspective (GLdouble *mat, GLdouble fovy, GLdouble aspect, GLdouble nearZ, GLdouble farZ) {
   GLdouble frustumH = tan(fovy / 360.0 * M_PI) * nearZ;
   GLdouble frustumW = frustumH * aspect;
 
@@ -247,7 +247,7 @@ m4Perspective (GLdouble *mat, float fovy, float aspect, float nearZ, float farZ)
 }
 
 GLdouble *
-m4Ortho (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
+m4Ortho (GLdouble *mat, GLdouble left, GLdouble right, GLdouble bottom, GLdouble top, GLdouble nearZ, GLdouble farZ) {
   GLdouble deltaX = right - left;
   GLdouble deltaY = top - bottom;
   GLdouble deltaZ = farZ - nearZ;
@@ -361,7 +361,7 @@ m4Invert (GLdouble *mat) {
 
 /* Puts the inverse of other matrix into mat */
 GLdouble *
-m4Inverse (GLdouble *mat, const float *other) {
+m4Inverse (GLdouble *mat, const GLdouble *other) {
   m4Copy (mat, other);
   m4Invert (mat);
   return mat;
