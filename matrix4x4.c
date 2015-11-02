@@ -56,8 +56,8 @@
  */
 
 
-float *
-m4LoadIdentity (float *mat) {
+GLdouble *
+m4LoadIdentity (GLdouble *mat) {
   unsigned int i;
   for (i = 0; i < 16; i++)
     mat[i] = 0;
@@ -69,8 +69,8 @@ m4LoadIdentity (float *mat) {
 }
 
 /* Copies other matrix into mat */
-float *
-m4Copy (float *mat, const float *other) {
+GLdouble *
+m4Copy (GLdouble *mat, const float *other) {
   unsigned int i;
   for (i = 0; i < 16; i++) {
     mat[i] = other[i];
@@ -78,9 +78,9 @@ m4Copy (float *mat, const float *other) {
   return mat;
 }
 
-float *
-m4Multiply (float *mat, const float *right) {
-  float tmp[16];
+GLdouble *
+m4Multiply (GLdouble *mat, const float *right) {
+  GLdouble tmp[16];
   unsigned int i;
 
   for (i = 0; i < 4; i++) {
@@ -112,19 +112,19 @@ m4Multiply (float *mat, const float *right) {
   return m4Copy (mat, tmp);
 }
 
-inline float
-m4Get (float *mat, unsigned int row, unsigned int col) {
+inline GLdouble
+m4Get (GLdouble *mat, unsigned int row, unsigned int col) {
   return mat[4*row+col];
 }
 
-float *
-m4MultMatrix (float *mat, const float *left) {
-  float tmp[16];
+GLdouble *
+m4MultMatrix (GLdouble *mat, const float *left) {
+  GLdouble tmp[16];
   return m4Copy (mat, m4Multiply (m4Copy (tmp, left), mat));
 }
 
-float *
-m4Scale (float *mat, float sx, float sy, float sz) {
+GLdouble *
+m4Scale (GLdouble *mat, float sx, float sy, float sz) {
   mat[0*4+0] *= sx;
   mat[0*4+1] *= sx;
   mat[0*4+2] *= sx;
@@ -143,8 +143,8 @@ m4Scale (float *mat, float sx, float sy, float sz) {
   return mat;
 }
 
-float *
-m4Translate (float *mat, float tx, float ty, float tz) {
+GLdouble *
+m4Translate (GLdouble *mat, float tx, float ty, float tz) {
   mat[3*4+0] += mat[0*4+0] * tx + mat[1*4+0] * ty + mat[2*4+0] * tz;
   mat[3*4+1] += mat[0*4+1] * tx + mat[1*4+1] * ty + mat[2*4+1] * tz;
   mat[3*4+2] += mat[0*4+2] * tx + mat[1*4+2] * ty + mat[2*4+2] * tz;
@@ -153,16 +153,16 @@ m4Translate (float *mat, float tx, float ty, float tz) {
   return mat;
 }
 
-float *
-m4Rotate (float *mat, float angle, float x, float y, float z) {
-  float mag = sqrt(x*x + y*y + z*z);
-  float sinAngle = sin(angle * M_PI / 180.0);
-  float cosAngle = cos(angle * M_PI / 180.0);
+GLdouble *
+m4Rotate (GLdouble *mat, float angle, float x, float y, float z) {
+  GLdouble mag = sqrt(x*x + y*y + z*z);
+  GLdouble sinAngle = sin(angle * M_PI / 180.0);
+  GLdouble cosAngle = cos(angle * M_PI / 180.0);
 
-  float xx, yy, zz, xy, yz, zx, xs, ys, zs;
-  float oneMinusCos;
+  GLdouble xx, yy, zz, xy, yz, zx, xs, ys, zs;
+  GLdouble oneMinusCos;
 
-  float rotMat[16];
+  GLdouble rotMat[16];
 
   if (mag <= 0)
     return mat;
@@ -207,13 +207,13 @@ m4Rotate (float *mat, float angle, float x, float y, float z) {
   return m4Copy (mat, m4Multiply (rotMat, mat));
 }
 
-float *
-m4Frustum (float *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
-  float deltaX = right - left;
-  float deltaY = top - bottom;
-  float deltaZ = farZ - nearZ;
+GLdouble *
+m4Frustum (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
+  GLdouble deltaX = right - left;
+  GLdouble deltaY = top - bottom;
+  GLdouble deltaZ = farZ - nearZ;
 
-  float frust[16];
+  GLdouble frust[16];
 
   if ( (nearZ <= 0.0) || (farZ <= 0.0) ||
        (deltaX <= 0.0) || (deltaY <= 0.0) || (deltaZ <= 0.0) )
@@ -238,21 +238,21 @@ m4Frustum (float *mat, float left, float right, float bottom, float top, float n
   return m4Copy (mat, m4Multiply (frust, mat));
 }
 
-float *
-m4Perspective (float *mat, float fovy, float aspect, float nearZ, float farZ) {
-  float frustumH = tan(fovy / 360.0 * M_PI) * nearZ;
-  float frustumW = frustumH * aspect;
+GLdouble *
+m4Perspective (GLdouble *mat, float fovy, float aspect, float nearZ, float farZ) {
+  GLdouble frustumH = tan(fovy / 360.0 * M_PI) * nearZ;
+  GLdouble frustumW = frustumH * aspect;
 
   return m4Frustum(mat, -frustumW, frustumW, -frustumH, frustumH, nearZ, farZ);
 }
 
-float *
-m4Ortho (float *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
-  float deltaX = right - left;
-  float deltaY = top - bottom;
-  float deltaZ = farZ - nearZ;
+GLdouble *
+m4Ortho (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ) {
+  GLdouble deltaX = right - left;
+  GLdouble deltaY = top - bottom;
+  GLdouble deltaZ = farZ - nearZ;
 
-  float ortho[16];
+  GLdouble ortho[16];
 
   if ( (deltaX == 0.0) || (deltaY == 0.0) || (deltaZ == 0.0) )
     return mat;
@@ -270,74 +270,74 @@ m4Ortho (float *mat, float left, float right, float bottom, float top, float nea
 }
 
 /* In-place inversion */
-float *
-m4Invert (float *mat) {
-  float tmp_0 = m4Get(mat,2,2) * m4Get(mat,3,3);
-  float tmp_1 = m4Get(mat,3,2) * m4Get(mat,2,3);
-  float tmp_2 = m4Get(mat,1,2) * m4Get(mat,3,3);
-  float tmp_3 = m4Get(mat,3,2) * m4Get(mat,1,3);
-  float tmp_4 = m4Get(mat,1,2) * m4Get(mat,2,3);
-  float tmp_5 = m4Get(mat,2,2) * m4Get(mat,1,3);
-  float tmp_6 = m4Get(mat,0,2) * m4Get(mat,3,3);
-  float tmp_7 = m4Get(mat,3,2) * m4Get(mat,0,3);
-  float tmp_8 = m4Get(mat,0,2) * m4Get(mat,2,3);
-  float tmp_9 = m4Get(mat,2,2) * m4Get(mat,0,3);
-  float tmp_10 = m4Get(mat,0,2) * m4Get(mat,1,3);
-  float tmp_11 = m4Get(mat,1,2) * m4Get(mat,0,3);
-  float tmp_12 = m4Get(mat,2,0) * m4Get(mat,3,1);
-  float tmp_13 = m4Get(mat,3,0) * m4Get(mat,2,1);
-  float tmp_14 = m4Get(mat,1,0) * m4Get(mat,3,1);
-  float tmp_15 = m4Get(mat,3,0) * m4Get(mat,1,1);
-  float tmp_16 = m4Get(mat,1,0) * m4Get(mat,2,1);
-  float tmp_17 = m4Get(mat,2,0) * m4Get(mat,1,1);
-  float tmp_18 = m4Get(mat,0,0) * m4Get(mat,3,1);
-  float tmp_19 = m4Get(mat,3,0) * m4Get(mat,0,1);
-  float tmp_20 = m4Get(mat,0,0) * m4Get(mat,2,1);
-  float tmp_21 = m4Get(mat,2,0) * m4Get(mat,0,1);
-  float tmp_22 = m4Get(mat,0,0) * m4Get(mat,1,1);
-  float tmp_23 = m4Get(mat,1,0) * m4Get(mat,0,1);
+GLdouble *
+m4Invert (GLdouble *mat) {
+  GLdouble tmp_0 = m4Get(mat,2,2) * m4Get(mat,3,3);
+  GLdouble tmp_1 = m4Get(mat,3,2) * m4Get(mat,2,3);
+  GLdouble tmp_2 = m4Get(mat,1,2) * m4Get(mat,3,3);
+  GLdouble tmp_3 = m4Get(mat,3,2) * m4Get(mat,1,3);
+  GLdouble tmp_4 = m4Get(mat,1,2) * m4Get(mat,2,3);
+  GLdouble tmp_5 = m4Get(mat,2,2) * m4Get(mat,1,3);
+  GLdouble tmp_6 = m4Get(mat,0,2) * m4Get(mat,3,3);
+  GLdouble tmp_7 = m4Get(mat,3,2) * m4Get(mat,0,3);
+  GLdouble tmp_8 = m4Get(mat,0,2) * m4Get(mat,2,3);
+  GLdouble tmp_9 = m4Get(mat,2,2) * m4Get(mat,0,3);
+  GLdouble tmp_10 = m4Get(mat,0,2) * m4Get(mat,1,3);
+  GLdouble tmp_11 = m4Get(mat,1,2) * m4Get(mat,0,3);
+  GLdouble tmp_12 = m4Get(mat,2,0) * m4Get(mat,3,1);
+  GLdouble tmp_13 = m4Get(mat,3,0) * m4Get(mat,2,1);
+  GLdouble tmp_14 = m4Get(mat,1,0) * m4Get(mat,3,1);
+  GLdouble tmp_15 = m4Get(mat,3,0) * m4Get(mat,1,1);
+  GLdouble tmp_16 = m4Get(mat,1,0) * m4Get(mat,2,1);
+  GLdouble tmp_17 = m4Get(mat,2,0) * m4Get(mat,1,1);
+  GLdouble tmp_18 = m4Get(mat,0,0) * m4Get(mat,3,1);
+  GLdouble tmp_19 = m4Get(mat,3,0) * m4Get(mat,0,1);
+  GLdouble tmp_20 = m4Get(mat,0,0) * m4Get(mat,2,1);
+  GLdouble tmp_21 = m4Get(mat,2,0) * m4Get(mat,0,1);
+  GLdouble tmp_22 = m4Get(mat,0,0) * m4Get(mat,1,1);
+  GLdouble tmp_23 = m4Get(mat,1,0) * m4Get(mat,0,1);
 
-  float t0 = ((tmp_0 * m4Get(mat,1,1) + tmp_3 * m4Get(mat,2,1) + tmp_4 * m4Get(mat,3,1)) -
+  GLdouble t0 = ((tmp_0 * m4Get(mat,1,1) + tmp_3 * m4Get(mat,2,1) + tmp_4 * m4Get(mat,3,1)) -
 	    (tmp_1 * m4Get(mat,1,1) + tmp_2 * m4Get(mat,2,1) + tmp_5 * m4Get(mat,3,1)));
-  float t1 = ((tmp_1 * m4Get(mat,0,1) + tmp_6 * m4Get(mat,2,1) + tmp_9 * m4Get(mat,3,1)) -
+  GLdouble t1 = ((tmp_1 * m4Get(mat,0,1) + tmp_6 * m4Get(mat,2,1) + tmp_9 * m4Get(mat,3,1)) -
 	    (tmp_0 * m4Get(mat,0,1) + tmp_7 * m4Get(mat,2,1) + tmp_8 * m4Get(mat,3,1)));
-  float t2 = ((tmp_2 * m4Get(mat,0,1) + tmp_7 * m4Get(mat,1,1) + tmp_10 * m4Get(mat,3,1)) -
+  GLdouble t2 = ((tmp_2 * m4Get(mat,0,1) + tmp_7 * m4Get(mat,1,1) + tmp_10 * m4Get(mat,3,1)) -
 	    (tmp_3 * m4Get(mat,0,1) + tmp_6 * m4Get(mat,1,1) + tmp_11 * m4Get(mat,3,1)));
-  float t3 = ((tmp_5 * m4Get(mat,0,1) + tmp_8 * m4Get(mat,1,1) + tmp_11 * m4Get(mat,2,1)) -
+  GLdouble t3 = ((tmp_5 * m4Get(mat,0,1) + tmp_8 * m4Get(mat,1,1) + tmp_11 * m4Get(mat,2,1)) -
 	    (tmp_4 * m4Get(mat,0,1) + tmp_9 * m4Get(mat,1,1) + tmp_10 * m4Get(mat,2,1)));
 
-  float d = 1.0 / (m4Get(mat,0,0) * t0 + m4Get(mat,1,0) * t1 + m4Get(mat,2,0) * t2 + m4Get(mat,3,0) * t3);
+  GLdouble d = 1.0 / (m4Get(mat,0,0) * t0 + m4Get(mat,1,0) * t1 + m4Get(mat,2,0) * t2 + m4Get(mat,3,0) * t3);
 
-  float out_00 = d * t0;
-  float out_01 = d * t1;
-  float out_02 = d * t2;
-  float out_03 = d * t3;
+  GLdouble out_00 = d * t0;
+  GLdouble out_01 = d * t1;
+  GLdouble out_02 = d * t2;
+  GLdouble out_03 = d * t3;
 
-  float out_10 = d * ((tmp_1 * m4Get(mat,1,0) + tmp_2 * m4Get(mat,2,0) + tmp_5 * m4Get(mat,3,0)) -
+  GLdouble out_10 = d * ((tmp_1 * m4Get(mat,1,0) + tmp_2 * m4Get(mat,2,0) + tmp_5 * m4Get(mat,3,0)) -
 		    (tmp_0 * m4Get(mat,1,0) + tmp_3 * m4Get(mat,2,0) + tmp_4 * m4Get(mat,3,0)));
-  float out_11 = d * ((tmp_0 * m4Get(mat,0,0) + tmp_7 * m4Get(mat,2,0) + tmp_8 * m4Get(mat,3,0)) -
+  GLdouble out_11 = d * ((tmp_0 * m4Get(mat,0,0) + tmp_7 * m4Get(mat,2,0) + tmp_8 * m4Get(mat,3,0)) -
 		    (tmp_1 * m4Get(mat,0,0) + tmp_6 * m4Get(mat,2,0) + tmp_9 * m4Get(mat,3,0)));
-  float out_12 = d * ((tmp_3 * m4Get(mat,0,0) + tmp_6 * m4Get(mat,1,0) + tmp_11 * m4Get(mat,3,0)) -
+  GLdouble out_12 = d * ((tmp_3 * m4Get(mat,0,0) + tmp_6 * m4Get(mat,1,0) + tmp_11 * m4Get(mat,3,0)) -
 		    (tmp_2 * m4Get(mat,0,0) + tmp_7 * m4Get(mat,1,0) + tmp_10 * m4Get(mat,3,0)));
-  float out_13 = d * ((tmp_4 * m4Get(mat,0,0) + tmp_9 * m4Get(mat,1,0) + tmp_10 * m4Get(mat,2,0)) -
+  GLdouble out_13 = d * ((tmp_4 * m4Get(mat,0,0) + tmp_9 * m4Get(mat,1,0) + tmp_10 * m4Get(mat,2,0)) -
 		    (tmp_5 * m4Get(mat,0,0) + tmp_8 * m4Get(mat,1,0) + tmp_11 * m4Get(mat,2,0)));
 
-  float out_20 = d * ((tmp_12 * m4Get(mat,1,3) + tmp_15 * m4Get(mat,2,3) + tmp_16 * m4Get(mat,3,3)) -
+  GLdouble out_20 = d * ((tmp_12 * m4Get(mat,1,3) + tmp_15 * m4Get(mat,2,3) + tmp_16 * m4Get(mat,3,3)) -
 		    (tmp_13 * m4Get(mat,1,3) + tmp_14 * m4Get(mat,2,3) + tmp_17 * m4Get(mat,3,3)));
-  float out_21 = d * ((tmp_13 * m4Get(mat,0,3) + tmp_18 * m4Get(mat,2,3) + tmp_21 * m4Get(mat,3,3)) -
+  GLdouble out_21 = d * ((tmp_13 * m4Get(mat,0,3) + tmp_18 * m4Get(mat,2,3) + tmp_21 * m4Get(mat,3,3)) -
 		    (tmp_12 * m4Get(mat,0,3) + tmp_19 * m4Get(mat,2,3) + tmp_20 * m4Get(mat,3,3)));
-  float out_22 = d * ((tmp_14 * m4Get(mat,0,3) + tmp_19 * m4Get(mat,1,3) + tmp_22 * m4Get(mat,3,3)) -
+  GLdouble out_22 = d * ((tmp_14 * m4Get(mat,0,3) + tmp_19 * m4Get(mat,1,3) + tmp_22 * m4Get(mat,3,3)) -
 		    (tmp_15 * m4Get(mat,0,3) + tmp_18 * m4Get(mat,1,3) + tmp_23 * m4Get(mat,3,3)));
-  float out_23 = d * ((tmp_17 * m4Get(mat,0,3) + tmp_20 * m4Get(mat,1,3) + tmp_23 * m4Get(mat,2,3)) -
+  GLdouble out_23 = d * ((tmp_17 * m4Get(mat,0,3) + tmp_20 * m4Get(mat,1,3) + tmp_23 * m4Get(mat,2,3)) -
 		    (tmp_16 * m4Get(mat,0,3) + tmp_21 * m4Get(mat,1,3) + tmp_22 * m4Get(mat,2,3)));
 
-  float out_30 = d * ((tmp_14 * m4Get(mat,2,2) + tmp_17 * m4Get(mat,3,2) + tmp_13 * m4Get(mat,1,2)) -
+  GLdouble out_30 = d * ((tmp_14 * m4Get(mat,2,2) + tmp_17 * m4Get(mat,3,2) + tmp_13 * m4Get(mat,1,2)) -
 		    (tmp_16 * m4Get(mat,3,2) + tmp_12 * m4Get(mat,1,2) + tmp_15 * m4Get(mat,2,2)));
-  float out_31 = d * ((tmp_20 * m4Get(mat,3,2) + tmp_12 * m4Get(mat,0,2) + tmp_19 * m4Get(mat,2,2)) -
+  GLdouble out_31 = d * ((tmp_20 * m4Get(mat,3,2) + tmp_12 * m4Get(mat,0,2) + tmp_19 * m4Get(mat,2,2)) -
 		    (tmp_18 * m4Get(mat,2,2) + tmp_21 * m4Get(mat,3,2) + tmp_13 * m4Get(mat,0,2)));
-  float out_32 = d * ((tmp_18 * m4Get(mat,1,2) + tmp_23 * m4Get(mat,3,2) + tmp_15 * m4Get(mat,0,2)) -
+  GLdouble out_32 = d * ((tmp_18 * m4Get(mat,1,2) + tmp_23 * m4Get(mat,3,2) + tmp_15 * m4Get(mat,0,2)) -
 		    (tmp_22 * m4Get(mat,3,2) + tmp_14 * m4Get(mat,0,2) + tmp_19 * m4Get(mat,1,2)));
-  float out_33 = d * ((tmp_22 * m4Get(mat,2,2) + tmp_16 * m4Get(mat,0,2) + tmp_21 * m4Get(mat,1,2)) -
+  GLdouble out_33 = d * ((tmp_22 * m4Get(mat,2,2) + tmp_16 * m4Get(mat,0,2) + tmp_21 * m4Get(mat,1,2)) -
 		    (tmp_20 * m4Get(mat,1,2) + tmp_23 * m4Get(mat,2,2) + tmp_17 * m4Get(mat,0,2)));
 
   mat[0*4+0] = out_00;
@@ -360,17 +360,17 @@ m4Invert (float *mat) {
 }
 
 /* Puts the inverse of other matrix into mat */
-float *
-m4Inverse (float *mat, const float *other) {
+GLdouble *
+m4Inverse (GLdouble *mat, const float *other) {
   m4Copy (mat, other);
   m4Invert (mat);
   return mat;
 }
 
 /* In-place transpose */
-float *
-m4Transpose (float *mat) {
-  float tmp = mat[0*4+1];
+GLdouble *
+m4Transpose (GLdouble *mat) {
+  GLdouble tmp = mat[0*4+1];
   mat[0*4+1] = mat[1*4+0];
   mat[1*4+0] = tmp;
 

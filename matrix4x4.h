@@ -55,50 +55,52 @@
 #ifndef MATRIX4x4_H
 #define MATRIX4x4_H
 
+#include <GL/gl.h>
+
 /* Copies other matrix into mat */
-float *
-m4Copy (float *mat, const float *other);
+GLdouble *
+m4Copy (GLdouble *mat, const float *other);
 
-float *
-m4Multiply (float *mat, const float *right);
+GLdouble *
+m4Multiply (GLdouble *mat, const float *right);
 
-float *
-m4MultMatrix (float *mat, const float *left);
+GLdouble *
+m4MultMatrix (GLdouble *mat, const float *left);
 
-inline float
-m4Get (float *mat, unsigned int row, unsigned int col);
+inline GLdouble
+m4Get (GLdouble *mat, unsigned int row, unsigned int col);
 
-float *
-m4Scale (float *mat, float sx, float sy, float sz);
+GLdouble *
+m4Scale (GLdouble *mat, float sx, float sy, float sz);
 
-float *
-m4Translate (float *mat, float tx, float ty, float tz);
+GLdouble *
+m4Translate (GLdouble *mat, float tx, float ty, float tz);
 
-float *
-m4Rotate (float *mat, float angle, float x, float y, float z);
+GLdouble *
+m4Rotate (GLdouble *mat, float angle, float x, float y, float z);
 
-float *
-m4Frustum (float *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
+GLdouble *
+m4Frustum (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
 
-float *
-m4Perspective (float *mat, float fovy, float aspect, float nearZ, float farZ);
+GLdouble *
+m4Perspective (GLdouble *mat, float fovy, float aspect, float nearZ, float farZ);
 
-float *
-m4Ortho (float *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
+GLdouble *
+m4Ortho (GLdouble *mat, float left, float right, float bottom, float top, float nearZ, float farZ);
 
 /* In-place inversion */
-float *
-m4Invert (float *mat);
+GLdouble *
+m4Invert (GLdouble *mat);
 
 /* Puts the inverse of other matrix into mat */
-float *
-m4Inverse (float *mat, const float *other);
+GLdouble *
+m4Inverse (GLdouble *mat, const float *other);
 
 /* In-place transpose */
-float *
-m4Transpose (float *mat);
+GLdouble *
+m4Transpose (GLdouble *mat);
 
-float *
-m4LoadIdentity (float *mat);
+GLdouble *
+m4LoadIdentity (GLdouble *mat);
 
 #endif
