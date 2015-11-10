@@ -57,6 +57,8 @@
 
 #include <GL/gl.h>
 
+#define MATRIX_SIZE 16
+
 /* Copies other matrix into mat */
 GLdouble *
 m4Copy (GLdouble *mat, const GLdouble *other);
